@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <style>
   * {
-    font-family:'Times New Roman', Times, serif;
+    font-family: "Times New Roman", Times, serif;
   }
   form {
-    padding: .5rem .6rem;
-    border: 1px solid rgba(255,255,255,85);
+    padding: 0.5rem 0.6rem;
+    border: 1px solid rgba(255, 255, 255, 85);
     background-color: aliceblue;
   }
   book book-start {
@@ -20,102 +20,117 @@
     max-width: 17rem;
     display: flex;
     flex-direction: column;
-    padding: .5rem .6rem;
+    padding: 0.5rem 0.6rem;
     background-color: yellow;
-    margin-top: .6rem;
+    margin-top: 0.6rem;
   }
 
   input[type="button"] {
-    padding: .5rem .6rem;
-    margin-right: .5rem;
+    padding: 0.5rem 0.6rem;
+    margin-right: 0.5rem;
     background-color: yellow;
   }
   input {
     font-size: 1rem;
-    padding: .5rem .6rem;
-    margin-bottom: .1rem;
+    padding: 0.5rem 0.6rem;
+    margin-bottom: 0.1rem;
   }
   label {
-    display:inline-block;
+    display: inline-block;
     min-width: 9rem;
   }
 </style>
 
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <title>Document</title>
-</head>
-<body>
-  <form action="#" class="form">
-    <h2 class="form_title">
-      Enter Book details here:
-    </h2>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form action="#" class="form">
+      <h2 class="form_title">
+        Enter Book details here:
+      </h2>
 
-    <div class="input">
-      <label for="book_title">
-        Book Title
-        
-      </label>
-      <input type="text" name="title" id="book_title" required />
-    </div>
+      <div class="input">
+        <label for="book_title">
+          Book Title
+        </label>
+        <input type="text" name="title" id="book_title" required />
+      </div>
 
-    <div class="input">
-      <label for="book_shortdescription">
-        Short Description
-        
-      </label>
-      <input type="text" name="shortdescription" id="book_shortdescription" required />
-    </div>
+      <div class="input">
+        <label for="book_shortdescription">
+          Short Description
+        </label>
+        <input
+          type="text"
+          name="shortdescription"
+          id="book_shortdescription"
+          required
+        />
+      </div>
 
-    <div class="input">
-      <label for="book_author">
-        Book Author
-        
-      </label>
-      <input type="text" name="author" id="book_author" required />
-    </div>
+      <div class="input">
+        <label for="book_author">
+          Book Author
+        </label>
+        <input type="text" name="author" id="book_author" required />
+      </div>
 
-    <div class="input">
-      <label for="book_pages">
-        No of Pages
-        
-      </label>
-      <input type="number" name="pages" id="book_pages" required />
-    </div>
+      <div class="input">
+        <label for="book_pages">
+          No of Pages
+        </label>
+        <input type="number" name="pages" id="book_pages" required />
+      </div>
 
-    <div class="input">
-      <input type="button" id="add_book" value="Add Book">
-    </div>
-  </form>
-  <book-list id="list-of-objects"> </book-list>
-</body>
+      <div class="input">
+        <input type="button" id="add_book" value="Add Book" />
+      </div>
+    </form>
+    <book-list id="list-of-objects"> </book-list>
+  </body>
 </html>
 <script>
-  if (storageAvailable()) {
-        debugger;
-        let item = localStorage.getItem("myLibrary");
-        if (item != "") {
-            var myLibrary = JSON.parse("[" + item + "]");
-            myLibrary.map(item => new Book(item.title,item.shortdescription,item.pages,item.author));
+  let myLibrary = [];
+  const setStorage = myLibrary =>
+    localStorage.setItem("myLibrary", JSON.stringify(myLibrary));
+  const getStorage = myLibrary => {
+    if (localStorage.getItem("myLibrary")) {
+      const item = JSON.parse(localStorage.getItem("myLibrary"));
+      myLibrary = item.map(
+        ({ title, shortdescription, pages, author, status }) => {
+          const newBook = new Book(
+            title,
+            shortdescription,
+            pages,
+            author,
+            status
+          );
+          return newBook;
         }
-        if (myLibrary === undefined) {
-          myLibrary = [];
-        } else if (myLibrary.some(book => book === undefined)) {
-          myLibrary = [];
-        } 
-        else {
-            render();
-        }
+      );
     }
-    else {
-        var myLibrary = [];
-    }
+    return myLibrary;
+  };
+
+  const button = document.querySelector("#add_book");
+  const validateInput = () => {};
+  button.addEventListener("click", addBookToLibrary);
 
   // all deleted items
-  let recycler = [];
+  const recycler = [];
+
+  if (storageAvailable()) {
+    if (localStorage.getItem("myLibrary")) {
+      myLibrary = getStorage(myLibrary);
+    }
+  } else {
+    myLibrary = [];
+  }
 
   function Book(title, shortdescription, pages, author) {
     this.title = title;
@@ -123,23 +138,21 @@
     this.pages = pages;
     this.author = author;
     this.status = "available";
-    this.read = function () {
+    this.read = function() {
       if (this.status === "available") {
-        this.status = "busy"
-      }
-      else {
-        this.status = "available"
+        this.status = "busy";
+      } else {
+        this.status = "available";
       }
       render();
-    }
-
+    };
   }
 
   function addBookToLibrary() {
     const book = new Book();
     let validEntry = true;
     const bookDetails = document.querySelectorAll("input");
-    const getBookDetails = ({ name, value, validity: { valid } }) => {
+    const getBookDetails = ({ name, value, validity: { valid = true } }) => {
       if (!valid) {
         validEntry = valid;
       }
@@ -149,20 +162,22 @@
     bookDetails.forEach(getBookDetails);
     if (validEntry) {
       myLibrary.push(book);
+      setStorage(myLibrary);
     }
     render();
   }
 
   function removeBookFromLibrary(index) {
     recycler.push(myLibrary.splice(index, 1));
+    setStorage(myLibrary);
     render();
   }
 
   function render() {
-    localStorage.setItem('myLibrary', myLibrary.map(post => JSON.stringify(post)));
+    myLibrary = getStorage(myLibrary);
     let render = myLibrary
       .map(
-        (book,index) => `
+        (book, index) => `
             <book>
               <book-start>
                 <book-title>${book.title}</book-title>
@@ -174,7 +189,7 @@
               <book-end>
                 <input type="button" value="dispose" onclick="removeBookFromLibrary(${index})">
                 <input type="button" value="take to read" onclick="myLibrary[${index}].read()">
-              </book-end>    
+              </book-end>
             </book>
         `
       )
@@ -183,36 +198,36 @@
     document.querySelector("#list-of-objects").innerHTML = render;
   }
 
-  const button = document.querySelector("#add_book");
-  const validateInput = () => { };
-  button.addEventListener("click", addBookToLibrary);
 
-  const startApp = () => {
-    render();
-  };
-
-  function storageAvailable(type = 'localStorage') {
-        var storage;
-        try {
-            storage = window[type];
-            var x = '__storage_test__';
-            storage.setItem(x, x);
-            storage.removeItem(x);
-            return true;
-        }
-        catch (e) {
-            return e instanceof DOMException && (
-                // everything except Firefox
-                e.code === 22 ||
-                // Firefox
-                e.code === 1014 ||
-                // test name field too, because code might not be present
-                // everything except Firefox
-                e.name === 'QuotaExceededError' ||
-                // Firefox
-                e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
-                // acknowledge QuotaExceededError only if there's something already stored
-                (storage && storage.length !== 0);
-        }
+  function storageAvailable(type = "localStorage") {
+    var storage;
+    try {
+      storage = window[type];
+      var x = "__storage_test__";
+      storage.setItem(x, x);
+      storage.removeItem(x);
+      return true;
+    } catch (e) {
+      return (
+        e instanceof DOMException &&
+        // everything except Firefox
+        (e.code === 22 ||
+          // Firefox
+          e.code === 1014 ||
+          // test name field too, because code might not be present
+          // everything except Firefox
+          e.name === "QuotaExceededError" ||
+          // Firefox
+          e.name === "NS_ERROR_DOM_QUOTA_REACHED") &&
+        // acknowledge QuotaExceededError only if there's something already stored
+        (storage && storage.length !== 0)
+      );
     }
+  }
+
+const startApp = () => {
+  render();
+};
+
+  startApp();
 </script>
