@@ -94,7 +94,22 @@
 </body>
 </html>
 <script>
-  let myLibrary = [];
+  if (storageAvailable()) {
+        debugger;
+        let item = localStorage.getItem("myLibrary");
+        if (item != "") {
+            var myLibrary = JSON.parse("[" + item + "]");
+            myLibrary.map(post => new Book(item.title,item.description,item.pages,item.author));
+        }
+        if (myLibrary === undefined) {
+            myLibrary = [];
+        } else {
+            render();
+        }
+    }
+    else {
+        var myLibrary = [];
+    }
 
   // all deleted items
   let recycler = [];
@@ -104,6 +119,17 @@
     this.shortdescription = shortdescription;
     this.pages = pages;
     this.author = author;
+    this.status = "available";
+    this.read = function () {
+      if (this.status === "available") {
+        this.status = "busy"
+      }
+      else {
+        this.status = "available"
+      }
+      render();
+    }
+
   }
 
   function addBookToLibrary() {
@@ -126,22 +152,25 @@
 
   function removeBookFromLibrary(index) {
     recycler.push(myLibrary.splice(index, 1));
+    render();
   }
 
   function render() {
+    localStorage.setItem('myLibrary', myLibrary.map(post => JSON.stringify(post)));
     let render = myLibrary
       .map(
-        book => `
+        (book,index) => `
             <book>
               <book-start>
                 <book-title>${book.title}</book-title>
                 <book-shortdescription>${book.shortdescription}</book-shortdescription>
+                <book-status>${book.status}</book-status>
                 <book-author>${book.author}</book-author>
                 <book-pages>${book.pages}</book-pages>
               </book-start>
               <book-end>
-                <input type="button" value="dispose">
-                <input type="button" value="take to read">
+                <input type="button" value="dispose" onclick="removeBookFromLibrary(${index})">
+                <input type="button" value="take to read" onclick="myLibrary[${index}].read()">
               </book-end>    
             </book>
         `
@@ -158,4 +187,29 @@
   const startApp = () => {
     render();
   };
+
+  function storageAvailable(type = 'localStorage') {
+        var storage;
+        try {
+            storage = window[type];
+            var x = '__storage_test__';
+            storage.setItem(x, x);
+            storage.removeItem(x);
+            return true;
+        }
+        catch (e) {
+            return e instanceof DOMException && (
+                // everything except Firefox
+                e.code === 22 ||
+                // Firefox
+                e.code === 1014 ||
+                // test name field too, because code might not be present
+                // everything except Firefox
+                e.name === 'QuotaExceededError' ||
+                // Firefox
+                e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+                // acknowledge QuotaExceededError only if there's something already stored
+                (storage && storage.length !== 0);
+        }
+    }
 </script>
