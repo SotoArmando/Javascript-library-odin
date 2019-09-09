@@ -1,57 +1,97 @@
 <!DOCTYPE html>
+<style>
+  * {
+    font-family:'Times New Roman', Times, serif;
+  }
+  form {
+    padding: .5rem .6rem;
+    border: 1px solid rgba(255,255,255,85);
+    background-color: aliceblue;
+  }
+  book book-start {
+    display: flex;
+    flex-direction: column;
+  }
+  book book-end {
+    display: flex;
+    flex-direction: row;
+  }
+  book {
+    max-width: 17rem;
+    display: flex;
+    flex-direction: column;
+    padding: .5rem .6rem;
+    background-color: yellow;
+    margin-top: .6rem;
+  }
+
+  input[type="button"] {
+    padding: .5rem .6rem;
+    margin-right: .5rem;
+    background-color: yellow;
+  }
+  input {
+    font-size: 1rem;
+    padding: .5rem .6rem;
+    margin-bottom: .1rem;
+  }
+  label {
+    display:inline-block;
+    min-width: 9rem;
+  }
+</style>
+
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Document</title>
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Document</title>
+</head>
+<body>
+  <form action="#" class="form">
+    <h2 class="form_title">
+      Enter Book details here:
+    </h2>
 
-  <body>
-    <form action="#" class="form">
-      <h2 class="form_title">
-        Enter Book details here:
-      </h2>
+    <div class="input">
+      <label for="book_title">
+        Book Title
+        
+      </label>
+      <input type="text" name="title" id="book_title" required />
+    </div>
 
-      <div class="input">
-        <label for="book_title">
-          Book Title
-          <input type="text" name="title" id="book_title" required />
-        </label>
-      </div>
+    <div class="input">
+      <label for="book_shortdescription">
+        Short Description
+        
+      </label>
+      <input type="text" name="shortdescription" id="book_shortdescription" required />
+    </div>
 
-      <div class="input">
-        <label for="book_shortdescription">
-          Short Description
-          <input
-            type="text"
-            name="shortdescription"
-            id="book_shortdescription"
-            required
-          />
-        </label>
-      </div>
+    <div class="input">
+      <label for="book_author">
+        Book Author
+        
+      </label>
+      <input type="text" name="author" id="book_author" required />
+    </div>
 
-      <div class="input">
-        <label for="book_author">
-          Book Author
-          <input type="text" name="author" id="book_author" required />
-        </label>
-      </div>
+    <div class="input">
+      <label for="book_pages">
+        No of Pages
+        
+      </label>
+      <input type="number" name="pages" id="book_pages" required />
+    </div>
 
-      <div class="input">
-        <label for="book_pages">
-          No of Pages
-          <input type="number" name="pages" id="book_pages" required />
-        </label>
-      </div>
-
-      <div class="input">
-        <button type="button" id="add_book">Add Book</button>
-      </div>
-    </form>
-    <book-list id="list-of-objects"> </book-list>
-  </body>
+    <div class="input">
+      <input type="button" id="add_book" value="Add Book">
+    </div>
+  </form>
+  <book-list id="list-of-objects"> </book-list>
+</body>
 </html>
 <script>
   let myLibrary = [];
@@ -93,10 +133,16 @@
       .map(
         book => `
             <book>
+              <book-start>
                 <book-title>${book.title}</book-title>
                 <book-shortdescription>${book.shortdescription}</book-shortdescription>
                 <book-author>${book.author}</book-author>
                 <book-pages>${book.pages}</book-pages>
+              </book-start>
+              <book-end>
+                <input type="button" value="dispose">
+                <input type="button" value="take to read">
+              </book-end>    
             </book>
         `
       )
@@ -106,7 +152,7 @@
   }
 
   const button = document.querySelector("#add_book");
-  const validateInput = () => {};
+  const validateInput = () => { };
   button.addEventListener("click", addBookToLibrary);
 
   const startApp = () => {
