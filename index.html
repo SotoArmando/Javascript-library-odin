@@ -1,52 +1,215 @@
 <!DOCTYPE html>
+<style>
+  * {
+    font-family:'Times New Roman', Times, serif;
+  }
+  form {
+    padding: .5rem .6rem;
+    border: 1px solid rgba(255,255,255,85);
+    background-color: aliceblue;
+  }
+  book book-start {
+    display: flex;
+    flex-direction: column;
+  }
+  book book-end {
+    display: flex;
+    flex-direction: row;
+  }
+  book {
+    max-width: 17rem;
+    display: flex;
+    flex-direction: column;
+    padding: .5rem .6rem;
+    background-color: yellow;
+    margin-top: .6rem;
+  }
+
+  input[type="button"] {
+    padding: .5rem .6rem;
+    margin-right: .5rem;
+    background-color: yellow;
+  }
+  input {
+    font-size: 1rem;
+    padding: .5rem .6rem;
+    margin-bottom: .1rem;
+  }
+  label {
+    display:inline-block;
+    min-width: 9rem;
+  }
+</style>
+
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Document</title>
 </head>
-
 <body>
-    <book-list id="list-of-objects">
+  <form action="#" class="form">
+    <h2 class="form_title">
+      Enter Book details here:
+    </h2>
 
-    </book-list>
+    <div class="input">
+      <label for="book_title">
+        Book Title
+        
+      </label>
+      <input type="text" name="title" id="book_title" required />
+    </div>
+
+    <div class="input">
+      <label for="book_shortdescription">
+        Short Description
+        
+      </label>
+      <input type="text" name="shortdescription" id="book_shortdescription" required />
+    </div>
+
+    <div class="input">
+      <label for="book_author">
+        Book Author
+        
+      </label>
+      <input type="text" name="author" id="book_author" required />
+    </div>
+
+    <div class="input">
+      <label for="book_pages">
+        No of Pages
+        
+      </label>
+      <input type="number" name="pages" id="book_pages" required />
+    </div>
+
+    <div class="input">
+      <input type="button" id="add_book" value="Add Book">
+    </div>
+  </form>
+  <book-list id="list-of-objects"> </book-list>
 </body>
-
 </html>
 <script>
-    let myLibrary = [];
-
-    // all deleted items
-    let recycler = [];
-
-    function Book(title, shortdescription, pages, author) {
-        this.title = title
-        this.shortdescription = shortdescription
-        this.pages = pages
-        this.author = author
+  if (storageAvailable()) {
+        debugger;
+        let item = localStorage.getItem("myLibrary");
+        if (item != "") {
+            var myLibrary = JSON.parse("[" + item + "]");
+            myLibrary.map(post => new Book(item.title,item.description,item.pages,item.author));
+        }
+        if (myLibrary === undefined) {
+            myLibrary = [];
+        } else {
+            render();
+        }
+    }
+    else {
+        var myLibrary = [];
     }
 
-    function addBookToLibrary() {
-        myLibrary.push();
+  // all deleted items
+  let recycler = [];
+
+  function Book(title, shortdescription, pages, author) {
+    this.title = title;
+    this.shortdescription = shortdescription;
+    this.pages = pages;
+    this.author = author;
+    this.status = "available";
+    this.read = function () {
+      if (this.status === "available") {
+        this.status = "busy"
+      }
+      else {
+        this.status = "available"
+      }
+      render();
     }
 
-    function removeBookFromLibrary(index) {
-        recycler.push(myLibrary.splice(index, 1));
-    }
+  }
 
-    function render() {
-        let render = myLibrary.map(book => `
+  function addBookToLibrary() {
+    const book = new Book();
+    let validEntry = true;
+    const bookDetails = document.querySelectorAll("input");
+    const getBookDetails = ({ name, value, validity: { valid } }) => {
+      if (!valid) {
+        validEntry = valid;
+      }
+      book[`${name}`] = value;
+    };
+
+    bookDetails.forEach(getBookDetails);
+    if (validEntry) {
+      myLibrary.push(book);
+    }
+    render();
+  }
+
+  function removeBookFromLibrary(index) {
+    recycler.push(myLibrary.splice(index, 1));
+    render();
+  }
+
+  function render() {
+    localStorage.setItem('myLibrary', myLibrary.map(post => JSON.stringify(post)));
+    let render = myLibrary
+      .map(
+        (book,index) => `
             <book>
+              <book-start>
                 <book-title>${book.title}</book-title>
                 <book-shortdescription>${book.shortdescription}</book-shortdescription>
+                <book-status>${book.status}</book-status>
                 <book-author>${book.author}</book-author>
                 <book-pages>${book.pages}</book-pages>
+              </book-start>
+              <book-end>
+                <input type="button" value="dispose" onclick="removeBookFromLibrary(${index})">
+                <input type="button" value="take to read" onclick="myLibrary[${index}].read()">
+              </book-end>    
             </book>
-        `).join("");
+        `
+      )
+      .join("");
 
-        document.querySelector("#list-of-objects").innerHTML = render;
+    document.querySelector("#list-of-objects").innerHTML = render;
+  }
+
+  const button = document.querySelector("#add_book");
+  const validateInput = () => { };
+  button.addEventListener("click", addBookToLibrary);
+
+  const startApp = () => {
+    render();
+  };
+
+  function storageAvailable(type = 'localStorage') {
+        var storage;
+        try {
+            storage = window[type];
+            var x = '__storage_test__';
+            storage.setItem(x, x);
+            storage.removeItem(x);
+            return true;
+        }
+        catch (e) {
+            return e instanceof DOMException && (
+                // everything except Firefox
+                e.code === 22 ||
+                // Firefox
+                e.code === 1014 ||
+                // test name field too, because code might not be present
+                // everything except Firefox
+                e.name === 'QuotaExceededError' ||
+                // Firefox
+                e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+                // acknowledge QuotaExceededError only if there's something already stored
+                (storage && storage.length !== 0);
+        }
     }
-
 </script>
