@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <book-list id="list-of-objects">
+
+    </book-list>
+</body>
+
+</html>
+<script>
+    let myLibrary = [];
+
+    // all deleted items
+    let recycler = [];
+
+    function Book(title, shortdescription, pages, author) {
+        this.title = title
+        this.shortdescription = shortdescription
+        this.pages = pages
+        this.author = author
+    }
+
+    function addBookToLibrary() {
+        myLibrary.push();
+    }
+
+    function removeBookFromLibrary(index) {
+        recycler.push(myLibrary.splice(index, 1));
+    }
+
+    function render() {
+        let render = myLibrary.map(book => `
+            <book>
+                <book-title>${book.title}</book-title>
+                <book-shortdescription>${book.shortdescription}</book-shortdescription>
+                <book-author>${book.author}</book-author>
+                <book-pages>${book.pages}</book-pages>
+            </book>
+        `).join("");
+
+        document.querySelector("#list-of-objects").innerHTML = render;
+    }
+
+</script>
