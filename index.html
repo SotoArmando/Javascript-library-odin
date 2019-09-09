@@ -99,11 +99,14 @@
         let item = localStorage.getItem("myLibrary");
         if (item != "") {
             var myLibrary = JSON.parse("[" + item + "]");
-            myLibrary.map(post => new Book(item.title,item.description,item.pages,item.author));
+            myLibrary.map(item => new Book(item.title,item.shortdescription,item.pages,item.author));
         }
         if (myLibrary === undefined) {
-            myLibrary = [];
-        } else {
+          myLibrary = [];
+        } else if (myLibrary.some(book => book === undefined)) {
+          myLibrary = [];
+        } 
+        else {
             render();
         }
     }
