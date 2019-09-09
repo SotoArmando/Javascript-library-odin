@@ -102,8 +102,11 @@
             myLibrary.map(post => new Book(item.title,item.description,item.pages,item.author));
         }
         if (myLibrary === undefined) {
-            myLibrary = [];
-        } else {
+          myLibrary = [];
+        } else if (myLibrary.some(book => book === undefined)) {
+          myLibrary = [];
+        } 
+        else {
             render();
         }
     }
