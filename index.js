@@ -106,7 +106,7 @@ function render() {
                 <book-shortdescription>${book.shortdescription}</book-shortdescription>
                 <book-status>${book.status}</book-status>
                 <book-author>${book.author}</book-author>
-                <book-pages>${book.pages}</book-pages>
+                <book-pages>${book.pages} pages</book-pages>
               </book-start>
               <book-end>
                 <input type="button" value="dispose" name="${index}">

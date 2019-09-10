@@ -1,18 +1,31 @@
+@import url("https://fonts.googleapis.com/css?family=Hepta+Slab:200,400,700&display=swap");
+
 * {
-  font-family: "Times New Roman", Times, serif;
+  font-family: "Hepta Slab", serif;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
-form {
+
+.main {
+  display: flex;
+  padding: 0.8rem;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form {
   padding: 0.5rem 0.6rem;
   border: 1px solid rgba(255, 255, 255, 85);
+  border-radius: 16px;
   background-color: aliceblue;
+  max-width: max-content;
 }
-book book-start {
+
+.book-list {
   display: flex;
-  flex-direction: column;
-}
-book book-end {
-  display: flex;
-  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
 }
 book {
   max-width: 17rem;
@@ -20,13 +33,51 @@ book {
   flex-direction: column;
   padding: 0.5rem 0.6rem;
   background-color: yellow;
-  margin-top: 0.6rem;
+  margin: 0.6rem;
+  border: 1px solid rgba(255, 255, 255, 85);
+  border-radius: 16px;
+}
+book book-start {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+book-title {
+  font-weight: 700;
+}
+book-shortdescription,
+book-pages {
+  font-weight: 200;
+}
+
+book book-end {
+  display: flex;
+  flex-direction: row;
 }
 
 input[type="button"] {
   padding: 0.5rem 0.6rem;
   margin-right: 0.5rem;
-  background-color: yellow;
+  background: yellow;
+  border: 1px solid yellow;
+  border-radius: 4px;
+  box-shadow: 4px 4px 2px -2px rgba(0, 0, 0, 0.39);
+}
+
+book input[type="button"] {
+  background: aliceblue;
+  border: 1px solid aliceblue;
+}
+
+input[type="button"]:hover {
+  box-shadow: 6px 6px 3px -3px rgba(0, 0, 0, 0.39);
+}
+.input {
+  padding: 4px 0;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
 }
 input {
   font-size: 1rem;
@@ -35,5 +86,4 @@ input {
 }
 label {
   display: inline-block;
-  min-width: 9rem;
 }

@@ -15,6 +15,9 @@ The objective is to create a book library with the following features.
 
 #### [Live link](https://raw.githack.com/SotoArmando/Javascript-library-odin/develop/index.html)
 
+#### ScreenShot
+![image](https://user-images.githubusercontent.com/36057474/64578920-e13e3f00-d378-11e9-80ad-a10f3d6fdbf6.png)
+
 #### Authors
 
 - [@SotoArmando](https://github.com/SotoArmando)
