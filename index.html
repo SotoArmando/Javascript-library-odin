@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link href="styles.css" rel="stylesheet" />
+    <title>Document</title>
+  </head>
+  <body>
+    <main class="main">
+    <form action="#" class="form">
+      <h2 class="form_title">
+        Enter Book details here:
+      </h2>
+
+      <div class="input">
+        <label for="book_title">
+          Book Title
+        </label>
+        <input type="text" name="title" id="book_title" required />
+      </div>
+
+      <div class="input">
+        <label for="book_shortdescription">
+          Short Description
+        </label>
+        <input
+          type="text"
+          name="shortdescription"
+          id="book_shortdescription"
+          required
+        />
+      </div>
+
+      <div class="input">
+        <label for="book_author">
+          Book Author
+        </label>
+        <input type="text" name="author" id="book_author" required />
+      </div>
+
+      <div class="input">
+        <label for="book_pages">
+          No of Pages
+        </label>
+        <input type="number" name="pages" id="book_pages" required />
+      </div>
+
+      <div class="input">
+        <input type="button" id="add_book" value="Add Book" />
+      </div>
+    </form>
+    <book-list id="list-of-objects" class="book-list"> </book-list>
+  </main>
+
+    <script src="index.js"></script>
+  </body>
+</html>

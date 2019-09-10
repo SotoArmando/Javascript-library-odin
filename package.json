@@ -1,0 +1,23 @@
+{
+  "name": "javascript-library-odin",
+  "version": "1.0.0",
+  "description": "Library",
+  "main": "index.js",
+  "dependencies": {
+    "eslint-config-airbnb": "^18.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SotoArmando/Javascript-library-odin.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SotoArmando/Javascript-library-odin/issues"
+  },
+  "homepage": "https://github.com/SotoArmando/Javascript-library-odin#readme"
+}
