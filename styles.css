@@ -1,0 +1,39 @@
+* {
+  font-family: "Times New Roman", Times, serif;
+}
+form {
+  padding: 0.5rem 0.6rem;
+  border: 1px solid rgba(255, 255, 255, 85);
+  background-color: aliceblue;
+}
+book book-start {
+  display: flex;
+  flex-direction: column;
+}
+book book-end {
+  display: flex;
+  flex-direction: row;
+}
+book {
+  max-width: 17rem;
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 0.6rem;
+  background-color: yellow;
+  margin-top: 0.6rem;
+}
+
+input[type="button"] {
+  padding: 0.5rem 0.6rem;
+  margin-right: 0.5rem;
+  background-color: yellow;
+}
+input {
+  font-size: 1rem;
+  padding: 0.5rem 0.6rem;
+  margin-bottom: 0.1rem;
+}
+label {
+  display: inline-block;
+  min-width: 9rem;
+}
